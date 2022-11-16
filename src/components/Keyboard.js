@@ -7,6 +7,7 @@ function Keyboard() {
     onSelectLetter,
     onDelete,
     onEnter,
+    disabledLetters
   } = useContext(AppContext);
 
   const keys1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
@@ -49,18 +50,18 @@ function Keyboard() {
     <div className='keyboard' onKeyDown={handleKeyBoard}>
       <div className='line1'>
         {keys1.map((key) => {
-          return <Key keyVal = {key}/>;
+          return <Key keyVal = {key} disabled={disabledLetters.includes(key)}/>;
         })}
       </div>
       <div className='line2'>
         {keys2.map((key) => {
-          return <Key keyVal = {key}/>;
+          return <Key keyVal = {key} disabled={disabledLetters.includes(key)}/>;
         })}
       </div>
       <div className='line3'>
         <Key keyVal = {"ENTER"} bigKey/>
         {keys3.map((key) => {
-          return <Key keyVal = {key}/>;
+          return <Key keyVal = {key} disabled={disabledLetters.includes(key)}/>;
         })}
         <Key keyVal = {"DELETE"} bigKey/>
       </div>

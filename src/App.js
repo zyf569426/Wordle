@@ -1,6 +1,7 @@
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
+import GameOver from "./components/GameOver";
 import { createContext, useEffect, useState } from "react";
 import { boardDefault, generateWordSet } from "./Words";
 
@@ -10,13 +11,17 @@ function App() {
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
-
-  const correctWord = "RIGHT";
-
+  const [disabledLetters, setDisabledLetters] = useState([]);
+  const [correctWord, setCorrectWord] = useState("");
+  const [gameOver, setGameOver] = useState({
+    gameOver: false,
+    guessWord: false,
+  })
 
   useEffect(() => {
     generateWordSet().then((words) => {
       setWordSet(words.wordSet);
+      setCorrectWord(words.todaysWord);
     });
   }, []);
 
@@ -49,7 +54,15 @@ function App() {
     } else {
       alert("Word Not Found");
     }
-    
+
+    if (currWord == correctWord) {      
+      setGameOver({gameOver: true, guessWord: true});
+      return;
+    }
+
+    if (currAttempt.attempt === 5) {
+      setGameOver({gameOver: true, guessWord: false});
+    }
   };
   return (
     <div className="App">
@@ -65,12 +78,16 @@ function App() {
           onSelectLetter,
           onDelete,
           onEnter,
-          correctWord
+          correctWord,
+          disabledLetters,
+          setDisabledLetters,
+          gameOver,
+          setGameOver
         }}
       >
         <div className="game">
           <Board />
-          <Keyboard />
+          {gameOver.gameOver ? <GameOver /> :  <Keyboard />}
         </div>
       </AppContext.Provider>
     </div>
