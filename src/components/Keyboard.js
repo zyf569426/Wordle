@@ -10,9 +10,9 @@ function Keyboard() {
     disabledLetters
   } = useContext(AppContext);
 
-  const keys1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
-  const keys2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-  const keys3 = ["Z", "X", "C", "V", "B", "N", "M"];
+  const keys1 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
+  const keys2 = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
+  const keys3 = ["z", "x", "c", "v", "b", "n", "m"];
 
   const handleKeyBoard = useCallback((event) => {
     if (event.key === "Enter") {
@@ -59,7 +59,7 @@ function Keyboard() {
         })}
       </div>
       <div className='line3'>
-        <Key keyVal = {"ENTER"} bigKey/>
+        <Key keyVal = {"SUBMIT"} bigKey/>
         {keys3.map((key) => {
           return <Key keyVal = {key} disabled={disabledLetters.includes(key)}/>;
         })}

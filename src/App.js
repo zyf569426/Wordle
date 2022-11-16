@@ -8,6 +8,9 @@ import { boardDefault, generateWordSet } from "./Words";
 export const AppContext = createContext();
 
 function App() {
+  const wordLen = 6;
+  const attemptMax = 6;
+
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
@@ -26,7 +29,7 @@ function App() {
   }, []);
 
   const onSelectLetter = (keyVal) => {
-    if (currAttempt.letterPos > 4) return;
+    if (currAttempt.letterPos > wordLen-1) return;
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
     setBoard(newBoard);
@@ -42,25 +45,31 @@ function App() {
   };
 
   const onEnter = () => {
-    if (currAttempt.letterPos !== 5) return;
+    // if (currAttempt.letterPos !== wordLen) return;
+
+    if (currAttempt.letterPos !== wordLen) {
+      alert("Please submit a " + wordLen + " letter word");
+    } else {
+      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+    }
 
     let currWord = "";
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < wordLen; i++) {
       currWord += board[currAttempt.attempt][i];
     }
 
-    if (wordSet.has(currWord.toLowerCase())) {
-      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
-    } else {
-      alert("Word Not Found");
-    }
+    // if (wordSet.has(currWord.toLowerCase())) {
+    //   setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+    // } else {
+    //   alert("Word Not Found");
+    // }
 
     if (currWord == correctWord) {      
       setGameOver({gameOver: true, guessWord: true});
       return;
     }
 
-    if (currAttempt.attempt === 5) {
+    if (currAttempt.attempt === attemptMax) {
       setGameOver({gameOver: true, guessWord: false});
     }
   };
