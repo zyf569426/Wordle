@@ -1,23 +1,29 @@
 import "./App.css";
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import BoardMedium from "./components/BoardMedium";
+import BoardHard from "./components/BoardHard";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import LevelSelection from "./components/LevelSelection";
 import { createContext, useEffect, useState } from "react";
-import { boardDefault, generateWordSet } from "./Words";
+import { boardMedium, boardHard, generateWordSet } from "./Words";
 
 
 export const AppContext = createContext();
 
+const MEDIUM_LEVEL_PATH = '/game/medium';
+const HARD_LEVEL_PATH = '/game/hard';
+const MEDIUM_WORD_LEN = 6;
+const HARD_WORD_LEN = 7;
+const MEDIUM_ATTEMPT_MAX = 6;
+const HARD_ATTEMPT_MAX = 5;
+
 function App() {
-  const WORD_LEN = 6;
-  const ATTEMPT_MAX = 6;
+  const location = useLocation();
+  const WORD_LEN = location.pathname === MEDIUM_LEVEL_PATH ? MEDIUM_WORD_LEN : HARD_WORD_LEN;
+  const ATTEMPT_MAX = location.pathname === MEDIUM_LEVEL_PATH ? MEDIUM_ATTEMPT_MAX : HARD_ATTEMPT_MAX;
 
-  // const LEVEL_NORMAL = "normal";
-  // const LEVEL_HARD = "hard";
-
-  const [board, setBoard] = useState(boardDefault);
+  const [board, setBoard] = useState(location.pathname === MEDIUM_LEVEL_PATH ? boardMedium : boardHard);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
   const [disabledLetters, setDisabledLetters] = useState([]);
@@ -26,7 +32,6 @@ function App() {
     gameOver: false,
     guessWord: false,
   })
-  // const [level, setLevel] = useState(LEVEL_NORMAL);
 
   useEffect(() => {
     generateWordSet().then((words) => {
@@ -86,8 +91,6 @@ function App() {
               <h1>Wordle</h1>
             </nav>
 
-          
-
           <AppContext.Provider
             value={{
               board,
@@ -108,7 +111,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<LevelSelection/>} />
                 <Route path='/game/medium' element={<><BoardMedium /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
-                <Route path='/game/hard' element={<><BoardMedium /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
+                <Route path='/game/hard' element={<><BoardHard /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
               </Routes>
 
               {/* <Board /> */}
