@@ -1,15 +1,21 @@
 import "./App.css";
+import { Routes, Route, Link } from 'react-router-dom';
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
+import LevelSelection from "./components/LevelSelection";
 import { createContext, useEffect, useState } from "react";
 import { boardDefault, generateWordSet } from "./Words";
+
 
 export const AppContext = createContext();
 
 function App() {
-  const wordLen = 6;
-  const attemptMax = 6;
+  const WORD_LEN = 6;
+  const ATTEMPT_MAX = 6;
+
+  // const LEVEL_NORMAL = "normal";
+  // const LEVEL_HARD = "hard";
 
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
@@ -20,6 +26,7 @@ function App() {
     gameOver: false,
     guessWord: false,
   })
+  // const [level, setLevel] = useState(LEVEL_NORMAL);
 
   useEffect(() => {
     generateWordSet().then((words) => {
@@ -29,7 +36,7 @@ function App() {
   }, []);
 
   const onSelectLetter = (keyVal) => {
-    if (currAttempt.letterPos > wordLen-1) return;
+    if (currAttempt.letterPos > WORD_LEN - 1) return;
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
     setBoard(newBoard);
@@ -47,14 +54,14 @@ function App() {
   const onEnter = () => {
     // if (currAttempt.letterPos !== wordLen) return;
 
-    if (currAttempt.letterPos !== wordLen) {
-      alert("Please submit a " + wordLen + " letter word");
+    if (currAttempt.letterPos !== WORD_LEN) {
+      alert("Please submit a " + WORD_LEN + " letter word");
     } else {
       setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
     }
 
     let currWord = "";
-    for (let i = 0; i < wordLen; i++) {
+    for (let i = 0; i < WORD_LEN; i++) {
       currWord += board[currAttempt.attempt][i];
     }
 
@@ -64,42 +71,45 @@ function App() {
     //   alert("Word Not Found");
     // }
 
-    if (currWord == correctWord) {      
-      setGameOver({gameOver: true, guessWord: true});
+    if (currWord == correctWord) {
+      setGameOver({ gameOver: true, guessWord: true });
       return;
     }
 
-    if (currAttempt.attempt === attemptMax) {
-      setGameOver({gameOver: true, guessWord: false});
+    if (currAttempt.attempt === ATTEMPT_MAX) {
+      setGameOver({ gameOver: true, guessWord: false });
     }
   };
   return (
-    <div className="App">
-      <nav>
-        <h1>Wordle</h1>
-      </nav>
-      <AppContext.Provider
-        value={{
-          board,
-          setBoard,
-          currAttempt,
-          setCurrAttempt,
-          onSelectLetter,
-          onDelete,
-          onEnter,
-          correctWord,
-          disabledLetters,
-          setDisabledLetters,
-          gameOver,
-          setGameOver
-        }}
-      >
-        <div className="game">
-          <Board />
-          {gameOver.gameOver ? <GameOver /> :  <Keyboard />}
+        <div className="App">
+            <nav>
+              <h1>Wordle</h1>
+            </nav>
+
+          {/* <Route path='/' element={<Board />}/> */}
+
+          <AppContext.Provider
+            value={{
+              board,
+              setBoard,
+              currAttempt,
+              setCurrAttempt,
+              onSelectLetter,
+              onDelete,
+              onEnter,
+              correctWord,
+              disabledLetters,
+              setDisabledLetters,
+              gameOver,
+              setGameOver
+            }}
+          >
+            <div className="game">
+              <Board />
+              {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+            </div>
+          </AppContext.Provider>
         </div>
-      </AppContext.Provider>
-    </div>
   );
 }
 
