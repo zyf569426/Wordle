@@ -1,4 +1,7 @@
-import wordBank from "./wordle-bank-medium.txt";
+import wordBankMediumPath from "./wordle-bank-medium.txt";
+import wordBankHardPath from "./wordle-bank-hard.txt";
+const MEDIUM_LEVEL_PATH = '/game/medium';
+const HARD_LEVEL_PATH = '/game/hard';
 
 export const boardMedium = [
     ["", "", "", "", "", ""],
@@ -18,15 +21,28 @@ export const boardHard = [
 ];
 
 export const generateWordSet = async () => {
-    let wordSet;
-    let todaysWord;
-    await fetch(wordBank)
+    
+    let wordSetMedium;
+    let todaysWordMedium;
+    let wordSetHard;
+    let todaysWordHard;
+    // let wordBankPath = levelPath === MEDIUM_LEVEL_PATH ? wordBankMediumPath : wordBankHardPath;
+    // console.log(levelPath);
+    await fetch(wordBankMediumPath)
         .then((response) => response.text())
         .then((result) => {
             const wordArr = result.split("\n");
-            todaysWord = wordArr[Math.floor(Math.random() * wordArr.length)]
-            wordSet = new Set(wordArr)
+            todaysWordMedium = wordArr[Math.floor(Math.random() * wordArr.length)]
+            wordSetMedium = new Set(wordArr)
         });
 
-    return { wordSet, todaysWord };
+    await fetch(wordBankHardPath)
+        .then((response) => response.text())
+        .then((result) => {
+            const wordArr = result.split("\n");
+            todaysWordHard = wordArr[Math.floor(Math.random() * wordArr.length)]
+            wordSetHard = new Set(wordArr)
+        });        
+
+    return { wordSetMedium, todaysWordMedium, wordSetHard, todaysWordHard };
 }

@@ -20,9 +20,8 @@ const HARD_ATTEMPT_MAX = 5;
 
 function App() {
   const location = useLocation();
-  const WORD_LEN = location.pathname === MEDIUM_LEVEL_PATH ? MEDIUM_WORD_LEN : HARD_WORD_LEN;
-  const ATTEMPT_MAX = location.pathname === MEDIUM_LEVEL_PATH ? MEDIUM_ATTEMPT_MAX : HARD_ATTEMPT_MAX;
 
+  const [path, setPath] = useState(location.pathname);
   const [board, setBoard] = useState(location.pathname === MEDIUM_LEVEL_PATH ? boardMedium : boardHard);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
@@ -33,10 +32,15 @@ function App() {
     guessWord: false,
   })
 
+  const WORD_LEN = path === MEDIUM_LEVEL_PATH ? MEDIUM_WORD_LEN : HARD_WORD_LEN;
+  const ATTEMPT_MAX = path === MEDIUM_LEVEL_PATH ? MEDIUM_ATTEMPT_MAX : HARD_ATTEMPT_MAX;
+
+  
   useEffect(() => {
     generateWordSet().then((words) => {
-      setWordSet(words.wordSet);
-      setCorrectWord(words.todaysWord);
+      setWordSet(path === MEDIUM_LEVEL_PATH ? words.wordSetMedium : words.wordSetHard);
+      setCorrectWord(path === MEDIUM_LEVEL_PATH ? words.todaysWordMedium : words.todaysWordHard);
+      console.log(words);
     });
   }, []);
 
@@ -61,20 +65,19 @@ function App() {
 
     if (currAttempt.letterPos !== WORD_LEN) {
       alert("Please submit a " + WORD_LEN + " letter word");
-    } else {
-      setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
-    }
+    } 
 
     let currWord = "";
     for (let i = 0; i < WORD_LEN; i++) {
       currWord += board[currAttempt.attempt][i];
     }
 
-    // if (wordSet.has(currWord.toLowerCase())) {
-    //   setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
-    // } else {
-    //   alert("Word Not Found");
-    // }
+    if (wordSet.has(currWord.toLowerCase())) {
+      setCurrAttempt({ attempt: ++currAttempt.attempt, letterPos: 0 });      
+    } else {
+      alert("Not a valid word, please enter a new word");
+    }
+    
 
     if (currWord == correctWord) {
       setGameOver({ gameOver: true, guessWord: true });
@@ -114,8 +117,6 @@ function App() {
                 <Route path='/game/hard' element={<><BoardHard /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
               </Routes>
 
-              {/* <Board /> */}
-              {/* {gameOver.gameOver ? <GameOver /> : <Keyboard />} */}
             </div>
           </AppContext.Provider>
         </div>
