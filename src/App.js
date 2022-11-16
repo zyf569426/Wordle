@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route, Link } from 'react-router-dom';
-import Board from "./components/Board";
+import BoardMedium from "./components/BoardMedium";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import LevelSelection from "./components/LevelSelection";
@@ -86,7 +86,7 @@ function App() {
               <h1>Wordle</h1>
             </nav>
 
-          {/* <Route path='/' element={<Board />}/> */}
+          
 
           <AppContext.Provider
             value={{
@@ -105,8 +105,14 @@ function App() {
             }}
           >
             <div className="game">
-              <Board />
-              {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+              <Routes>
+                <Route path='/' element={<LevelSelection/>} />
+                <Route path='/game/medium' element={<><BoardMedium /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
+                <Route path='/game/hard' element={<><BoardMedium /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
+              </Routes>
+
+              {/* <Board /> */}
+              {/* {gameOver.gameOver ? <GameOver /> : <Keyboard />} */}
             </div>
           </AppContext.Provider>
         </div>

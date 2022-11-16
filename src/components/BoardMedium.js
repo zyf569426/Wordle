@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Letter from './Letter';
 
-function Board() {
+function BoardMedium() {
   return (
     <div className='board'>
       <div className='row'>
@@ -56,5 +56,5 @@ function Board() {
   );
 }
 
-export default Board;
+export default BoardMedium;
 
