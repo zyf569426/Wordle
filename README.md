@@ -1,7 +1,7 @@
 # Wordle
 
-# Hints: press F12 to see correct word
-
+# Hints: open console to get Correct word
+ 
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
