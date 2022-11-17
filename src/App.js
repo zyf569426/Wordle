@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import BoardMedium from "./components/BoardMedium";
 import BoardHard from "./components/BoardHard";
 import Keyboard from "./components/Keyboard";
@@ -22,7 +22,8 @@ function App() {
   const location = useLocation();
 
   const [path, setPath] = useState(location.pathname);
-  const [board, setBoard] = useState(location.pathname === MEDIUM_LEVEL_PATH ? boardMedium : boardHard);
+  console.log(path);
+  const [board, setBoard] = useState(path === "/" || path === MEDIUM_LEVEL_PATH ? boardMedium : boardHard);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
   const [disabledLetters, setDisabledLetters] = useState([]);

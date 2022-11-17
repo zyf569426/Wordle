@@ -7,9 +7,9 @@ function LevelSelection() {
     <div className='container'>
         <h1>Select your level</h1>
         <ul class='levels'>
-            <li><Link to='/game/medium'>Medium</Link></li>
-            <li><Link to='/game/hard'>Hard</Link></li>            
-        </ul>
+        <Link id="medium-level-link" to='/game/medium'><li>Medium</li></Link>
+        <Link id="hard-level-link" to='/game/hard'><li>Hard</li></Link>            
+        </ul>                
     </div>
 
   )

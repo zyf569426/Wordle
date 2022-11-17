@@ -160,18 +160,30 @@ h1 {
   text-align: center;
   border: 1px solid #f6f6f6;
   border-radius: 5px;
-  box-shadow: 0 2px 6px 0 rgba(255,255,255,0.5);
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.1);
   position: relative;
-  transition: all .2s ease-in-out;
+  transition: all .3s ease-in-out;
   cursor: pointer;
       
 }
 
-/* li :hover {
-  color: #fff;
-  background-color: #99ce2a;
-  transform: scale(1.04);
-} */
+#medium-level-link {
+  text-decoration: none;
+  color: white;
+}
+
+#medium-level-link :hover{
+  color: cyan;  
+}
+
+#hard-level-link {
+  text-decoration: none;
+  color: white;
+}
+
+#hard-level-link :hover{
+  color: red;  
+}
 
 
   
