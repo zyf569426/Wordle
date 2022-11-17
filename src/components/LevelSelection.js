@@ -10,10 +10,8 @@ function LevelSelection() {
         <Link id="medium-level-link" to='/game/medium'><li>Medium</li></Link>
         <Link id="hard-level-link" to='/game/hard'><li>Hard</li></Link>
       </ul>
-      
       <Link id="rule-link" to='/rules'><h2>Rules</h2></Link>
     </div>
-
   )
 }
 

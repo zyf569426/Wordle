@@ -34,13 +34,12 @@ function App() {
     guessWord: false,
   })
   const [notice, setNotice] = useState({
-    wordInvalid: false,
-    wordTooShort: false
+    wordTooShort: false,
+    wordInvalid: false
   });
 
   const WORD_LEN = path === MEDIUM_LEVEL_PATH ? MEDIUM_WORD_LEN : HARD_WORD_LEN;
   const ATTEMPT_MAX = path === MEDIUM_LEVEL_PATH ? MEDIUM_ATTEMPT_MAX : HARD_ATTEMPT_MAX;
-
 
   useEffect(() => {
     generateWordSet().then((words) => {
@@ -60,8 +59,8 @@ function App() {
   };
 
   const onDelete = () => {
-    if (currAttempt.letterPos === 0) return;
-    setNotice(false);
+    if (currAttempt.letterPos === 0) return;  
+    setNotice({ wordTooShort: false, wordInvalid: false });
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "";
     setBoard(newBoard);
@@ -75,11 +74,11 @@ function App() {
     }
 
     if (currAttempt.letterPos !== WORD_LEN) {            
-      setNotice({ wordTooShort: true});
+      setNotice({ wordTooShort: true, wordInvalid: false });
     } else if (wordSet.has(currWord.toLowerCase())) {
       setCurrAttempt({ attempt: ++currAttempt.attempt, letterPos: 0 });
     } else {      
-      setNotice({ wordInvalid: true });
+      setNotice({ wordTooShort: false, wordInvalid: true });
     }
 
     if (currWord == correctWord) {
@@ -119,11 +118,13 @@ function App() {
             <Route path='/' element={<LevelSelection />} />
             <Route path='/game/medium' element={<>
               <BoardMedium />
-              {<Notice wordTooShort={notice.wordTooShort} wordInvalid={notice.wordInvalid} />}
-              {/* {notice.wordTooShort || notice.wordInvalid ? <Notice wordTooShort={notice.wordTooShort} wordInvalid={notice.wordInvalid} /> : <></>} */}
+              {<Notice wordTooShort={notice.wordTooShort} wordInvalid={notice.wordInvalid} />}              
               {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>} 
             />
-            <Route path='/game/hard' element={<><BoardHard /> <Notice /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>} />
+            <Route path='/game/hard' element={<>            
+            <BoardHard /> 
+            {<Notice wordTooShort={notice.wordTooShort} wordInvalid={notice.wordInvalid} />}  
+            {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>} />
             <Route path='/rules' element={<Rules />} />
           </Routes>
 
