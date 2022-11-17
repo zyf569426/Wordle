@@ -12,6 +12,7 @@
 body {
   padding: 0%;
   margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 nav {
@@ -25,7 +26,6 @@ nav {
 
 nav h1 {
   margin: 0;
-  font-family: Helvetica, Arial, sans-serif;
   color: white;
   font-size: 45px;
 }
@@ -130,7 +130,6 @@ nav h1 {
 
 
 h1 {
-  font-family: Helvetica, Arial, sans-serif;
   color: white;
   font-size: 35px;
 }
@@ -149,7 +148,6 @@ h1 {
   
 
 .levels li {
-  font-family: Helvetica, Arial, sans-serif;
   margin: 0 15px 30px;
   padding: 5px;
   width: 120px;
@@ -184,6 +182,32 @@ h1 {
 #hard-level-link :hover{
   color: red;  
 }
+
+h2 {
+  font-size: 30px;
+}
+
+#rule-link {
+  color: #873e23;
+  text-decoration: none;
+ }
+
+.container {
+  width: 400px;
+  
+}
+
+ p {
+  text-align: justify; 
+  font-size: 18px;
+ }
+
+
+
+
+
+
+
 
 
   

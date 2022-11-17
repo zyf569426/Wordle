@@ -5,6 +5,7 @@ import BoardHard from "./components/BoardHard";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import LevelSelection from "./components/LevelSelection";
+import Rules from "./components/Rules";
 import { createContext, useEffect, useState } from "react";
 import { boardMedium, boardHard, generateWordSet } from "./Words";
 
@@ -116,6 +117,7 @@ function App() {
                 <Route path='/' element={<LevelSelection/>} />
                 <Route path='/game/medium' element={<><BoardMedium /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
                 <Route path='/game/hard' element={<><BoardHard /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
+                <Route path='/rules' element={<Rules/>} />
               </Routes>
 
             </div>
