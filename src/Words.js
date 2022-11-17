@@ -1,4 +1,4 @@
-import wordBankMediumPath from "./wordle-bank-medium.txt";
+import wordBankMediumPath from "./wordle-bank-medium-easy.txt";
 import wordBankHardPath from "./wordle-bank-hard.txt";
 const MEDIUM_LEVEL_PATH = '/game/medium';
 const HARD_LEVEL_PATH = '/game/hard';
