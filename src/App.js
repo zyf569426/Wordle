@@ -6,6 +6,7 @@ import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import LevelSelection from "./components/LevelSelection";
 import Rules from "./components/Rules";
+import Notice from "./components/Notice";
 import { createContext, useEffect, useState } from "react";
 import { boardMedium, boardHard, generateWordSet } from "./Words";
 
@@ -32,11 +33,15 @@ function App() {
     gameOver: false,
     guessWord: false,
   })
+  const [notice, setNotice] = useState({
+    wordInvalid: false,
+    wordTooShort: false
+  });
 
   const WORD_LEN = path === MEDIUM_LEVEL_PATH ? MEDIUM_WORD_LEN : HARD_WORD_LEN;
   const ATTEMPT_MAX = path === MEDIUM_LEVEL_PATH ? MEDIUM_ATTEMPT_MAX : HARD_ATTEMPT_MAX;
 
-  
+
   useEffect(() => {
     generateWordSet().then((words) => {
       setWordSet(path === MEDIUM_LEVEL_PATH ? words.wordSetMedium : words.wordSetHard);
@@ -56,6 +61,7 @@ function App() {
 
   const onDelete = () => {
     if (currAttempt.letterPos === 0) return;
+    setNotice(false);
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "";
     setBoard(newBoard);
@@ -63,21 +69,18 @@ function App() {
   };
 
   const onEnter = () => {
-    if (currAttempt.letterPos !== WORD_LEN) {
-      alert("Please submit a " + WORD_LEN + " letter word");
-    } 
-
     let currWord = "";
     for (let i = 0; i < WORD_LEN; i++) {
       currWord += board[currAttempt.attempt][i];
     }
 
-    if (wordSet.has(currWord.toLowerCase())) {
-      setCurrAttempt({ attempt: ++currAttempt.attempt, letterPos: 0 });      
-    } else {
-      alert("Not a valid word, please enter a new word");
+    if (currAttempt.letterPos !== WORD_LEN) {            
+      setNotice({ wordTooShort: true});
+    } else if (wordSet.has(currWord.toLowerCase())) {
+      setCurrAttempt({ attempt: ++currAttempt.attempt, letterPos: 0 });
+    } else {      
+      setNotice({ wordInvalid: true });
     }
-    
 
     if (currWord == correctWord) {
       setGameOver({ gameOver: true, guessWord: true });
@@ -89,38 +92,44 @@ function App() {
     }
   };
   return (
-        <div className="App">
-            <nav>
-              <h1>Wordle</h1>
-            </nav>
+    <div className="App">
+      <nav>
+        <h1>Wordle</h1>
+      </nav>
 
-          <AppContext.Provider
-            value={{
-              board,
-              setBoard,
-              currAttempt,
-              setCurrAttempt,
-              onSelectLetter,
-              onDelete,
-              onEnter,
-              correctWord,
-              disabledLetters,
-              setDisabledLetters,
-              gameOver,
-              setGameOver
-            }}
-          >
-            <div className="game">
-              <Routes>
-                <Route path='/' element={<LevelSelection/>} />
-                <Route path='/game/medium' element={<><BoardMedium /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
-                <Route path='/game/hard' element={<><BoardHard /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>}/>
-                <Route path='/rules' element={<Rules/>} />
-              </Routes>
+      <AppContext.Provider
+        value={{
+          board,
+          setBoard,
+          currAttempt,
+          setCurrAttempt,
+          onSelectLetter,
+          onDelete,
+          onEnter,
+          correctWord,
+          disabledLetters,
+          setDisabledLetters,
+          gameOver,
+          setGameOver,
+          notice
+        }}
+      >
+        <div className="game">
+          <Routes>
+            <Route path='/' element={<LevelSelection />} />
+            <Route path='/game/medium' element={<>
+              <BoardMedium />
+              {<Notice wordTooShort={notice.wordTooShort} wordInvalid={notice.wordInvalid} />}
+              {/* {notice.wordTooShort || notice.wordInvalid ? <Notice wordTooShort={notice.wordTooShort} wordInvalid={notice.wordInvalid} /> : <></>} */}
+              {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>} 
+            />
+            <Route path='/game/hard' element={<><BoardHard /> <Notice /> {gameOver.gameOver ? <GameOver /> : <Keyboard />} </>} />
+            <Route path='/rules' element={<Rules />} />
+          </Routes>
 
-            </div>
-          </AppContext.Provider>
         </div>
+      </AppContext.Provider>
+    </div>
   );
 }
 
