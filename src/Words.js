@@ -21,13 +21,11 @@ export const boardHard = [
 ];
 
 export const generateWordSet = async () => {
-    
     let wordSetMedium;
     let todaysWordMedium;
     let wordSetHard;
     let todaysWordHard;
-    // let wordBankPath = levelPath === MEDIUM_LEVEL_PATH ? wordBankMediumPath : wordBankHardPath;
-    // console.log(levelPath);
+    
     await fetch(wordBankMediumPath)
         .then((response) => response.text())
         .then((result) => {

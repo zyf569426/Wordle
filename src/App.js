@@ -23,7 +23,6 @@ function App() {
   const location = useLocation();
 
   const [path, setPath] = useState(location.pathname);
-  console.log(path);
   const [board, setBoard] = useState(path === "/" || path === MEDIUM_LEVEL_PATH ? boardMedium : boardHard);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
@@ -42,7 +41,8 @@ function App() {
     generateWordSet().then((words) => {
       setWordSet(path === MEDIUM_LEVEL_PATH ? words.wordSetMedium : words.wordSetHard);
       setCorrectWord(path === MEDIUM_LEVEL_PATH ? words.todaysWordMedium : words.todaysWordHard);
-      console.log(words);
+      console.log(words.todaysWordMedium);
+      console.log(words.todaysWordHard);
     });
   }, []);
 
@@ -63,8 +63,6 @@ function App() {
   };
 
   const onEnter = () => {
-    // if (currAttempt.letterPos !== wordLen) return;
-
     if (currAttempt.letterPos !== WORD_LEN) {
       alert("Please submit a " + WORD_LEN + " letter word");
     } 
