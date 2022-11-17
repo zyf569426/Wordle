@@ -9,8 +9,7 @@ function Letter({ letterPos, attemptVal }) {
   const correct = correctWord[letterPos] === letter;
 
 
-  let letterInCorrectCount = (correctWord.match(letter) || []).length;
-  // let letterInAttemptCount = (correctWord.substring(0, letterPos + 1).match(letter) || []).length;
+  let letterInCorrectCount = (correctWord.match(letter) || []).length;  
   let letterInAttemptCount = 0;
 
   for (let i = 0; i <= letterPos; i++) {
@@ -18,8 +17,7 @@ function Letter({ letterPos, attemptVal }) {
       letterInAttemptCount++;
     }
   }
-
-  // console.log("count compare: " + letterInAttemptCount + " " + letterInCorrectCount);
+  
   const almost = !correct
     && letter !== ""
     && correctWord.includes(letter)
