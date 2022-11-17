@@ -24,7 +24,7 @@ function App() {
   const location = useLocation();
 
   const [path, setPath] = useState(location.pathname);
-  const [board, setBoard] = useState(path === "/" || path === MEDIUM_LEVEL_PATH ? boardMedium : boardHard);
+  const [board, setBoard] = useState(path === HARD_LEVEL_PATH ? boardHard : boardMedium );
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
   const [wordSet, setWordSet] = useState(new Set());
   const [disabledLetters, setDisabledLetters] = useState([]);
@@ -37,21 +37,52 @@ function App() {
     wordTooShort: false,
     wordInvalid: false
   });
+  const [wordLen, setWordLen] = useState(0);
+  
+  
+  // let wordLen = path === HARD_LEVEL_PATH ? HARD_WORD_LEN : MEDIUM_WORD_LEN;  
+  let attemptMax = location.pathname === HARD_LEVEL_PATH ? HARD_ATTEMPT_MAX : MEDIUM_ATTEMPT_MAX;
+  
+  // let mediumWordSet = new Set();
+  // let hardWordSet = new Set();
+  // let correctSixWord = "";
+  // let correctSevenWord = "";
 
-  const WORD_LEN = path === MEDIUM_LEVEL_PATH ? MEDIUM_WORD_LEN : HARD_WORD_LEN;
-  const ATTEMPT_MAX = path === MEDIUM_LEVEL_PATH ? MEDIUM_ATTEMPT_MAX : HARD_ATTEMPT_MAX;
+  // console.log(wordLen);
 
   useEffect(() => {
     generateWordSet().then((words) => {
-      setWordSet(path === MEDIUM_LEVEL_PATH ? words.wordSetMedium : words.wordSetHard);
-      setCorrectWord(path === MEDIUM_LEVEL_PATH ? words.todaysWordMedium : words.todaysWordHard);
-      console.log(words.todaysWordMedium);
-      console.log(words.todaysWordHard);
+        setPath(location.pathname);
+        console.log(location.pathname);
+        setWordLen(location.pathname === HARD_LEVEL_PATH ? HARD_WORD_LEN : MEDIUM_WORD_LEN);
+        setWordSet(location.pathname == HARD_LEVEL_PATH ? words.wordSetHard : words.wordSetMedium );
+        setCorrectWord(location.pathname == HARD_LEVEL_PATH ? words.todaysWordHard : words.todaysWordMedium);
+        
+        // mediumWordSet = words.wordSetMedium;
+        // hardWordSet = words.wordSetHard;
+        // correctSixWord = words.todaysWordMedium;
+        // correctSevenWord = words.todaysWordHard;
+  
+        // console.log(words.todaysWordMedium);
+
+        // console.log(location.pathname == HARD_LEVEL_PATH);
+        // console.log(words);
+        console.log(wordLen);
+        console.log(correctWord);
+        console.log(attemptMax);
+        
     });
-  }, []);
+  }, [wordLen, location.pathname]);
 
   const onSelectLetter = (keyVal) => {
-    if (currAttempt.letterPos > WORD_LEN - 1) return;
+    // if (currAttempt.attempt === 0 && currAttempt.letterPos === 0) {
+    //   setPath(location.pathname);  
+    //   setWordSet(path === MEDIUM_LEVEL_PATH ? mediumWordSet : hardWordSet);
+    //   setCorrectWord(path === MEDIUM_LEVEL_PATH ? correctSixWord : correctSevenWord);
+    // }
+    // console.log(correctWord);
+
+    if (currAttempt.letterPos > wordLen - 1) return;
     const newBoard = [...board];
     newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
     setBoard(newBoard);
@@ -67,14 +98,16 @@ function App() {
     setCurrAttempt({ ...currAttempt, letterPos: currAttempt.letterPos - 1 });
   };
 
-  const onEnter = () => {
+  const onEnter = () => {    
+    console.log(correctWord);
     let currWord = "";
-    for (let i = 0; i < WORD_LEN; i++) {
+    for (let i = 0; i < wordLen; i++) {
       currWord += board[currAttempt.attempt][i];
     }
+    console.log(board);
 
-    if (currAttempt.letterPos !== WORD_LEN) {            
-      setNotice({ wordTooShort: true, wordInvalid: false });
+    if (currAttempt.letterPos !== wordLen) {            
+      setNotice({ wordTooShort: true, wordInvalid: false });      
     } else if (wordSet.has(currWord.toLowerCase())) {
       setCurrAttempt({ attempt: ++currAttempt.attempt, letterPos: 0 });
     } else {      
@@ -86,7 +119,8 @@ function App() {
       return;
     }
 
-    if (currAttempt.attempt === ATTEMPT_MAX) {
+    console.log(currAttempt.attempt + " " + attemptMax);
+    if (currAttempt.attempt === attemptMax) {
       setGameOver({ gameOver: true, guessWord: false });
     }
   };
@@ -110,7 +144,11 @@ function App() {
           setDisabledLetters,
           gameOver,
           setGameOver,
-          notice
+          notice,
+          wordLen,
+          setWordLen,
+          wordSet, 
+          setWordSet
         }}
       >
         <div className="game">
