@@ -10,7 +10,7 @@ function Letter({ letterPos, attemptVal }) {
   let letterInCorrectCount = (correctWord.match(letter) || []).length; 
   
   for (let i = 0; i <= correctWord.length; i++) {
-    if (letter === board[attemptVal][i] && letter == correctWord.charAt(i)) {
+    if (letter === board[attemptVal][i] && letter === correctWord.charAt(i)) {
       --letterInCorrectCount;
     }
   }

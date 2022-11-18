@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, useLocation, Link } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import BoardMedium from "./components/BoardMedium";
 import BoardHard from "./components/BoardHard";
 import Keyboard from "./components/Keyboard";
@@ -42,8 +42,8 @@ function App() {
   useEffect(() => {
     generateWordSet().then((words) => {                
         setWordLen(location.pathname === HARD_LEVEL_PATH ? HARD_WORD_LEN : MEDIUM_WORD_LEN);
-        setWordSet(location.pathname == HARD_LEVEL_PATH ? words.wordSetHard : words.wordSetMedium );
-        setCorrectWord(location.pathname == HARD_LEVEL_PATH ? words.todaysWordHard : words.todaysWordMedium);                                                  
+        setWordSet(location.pathname === HARD_LEVEL_PATH ? words.wordSetHard : words.wordSetMedium );
+        setCorrectWord(location.pathname === HARD_LEVEL_PATH ? words.todaysWordHard : words.todaysWordMedium);                                                  
     });
   }, [wordLen, location.pathname]);
 
@@ -79,7 +79,7 @@ function App() {
       setNotice({ wordTooShort: false, wordInvalid: true });
     }
 
-    if (currWord == correctWord) {
+    if (currWord === correctWord) {
       setGameOver({ gameOver: true, guessWord: true });
       return;
     }
