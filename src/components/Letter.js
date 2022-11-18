@@ -5,11 +5,16 @@ import { AppContext } from "../App";
 function Letter({ letterPos, attemptVal }) {
   const { board, correctWord, currAttempt, setDisabledLetters } = useContext(AppContext);
   const letter = board[attemptVal][letterPos];
-
   const correct = correctWord[letterPos] === letter;
 
+  let letterInCorrectCount = (correctWord.match(letter) || []).length; 
+  
+  for (let i = 0; i <= correctWord.length; i++) {
+    if (letter === board[attemptVal][i] && letter == correctWord.charAt(i)) {
+      --letterInCorrectCount;
+    }
+  }
 
-  let letterInCorrectCount = (correctWord.match(letter) || []).length;  
   let letterInAttemptCount = 0;
 
   for (let i = 0; i <= letterPos; i++) {
@@ -27,7 +32,7 @@ function Letter({ letterPos, attemptVal }) {
     (correct ? "correct" : almost ? "almost" : "error");
 
   useEffect(() => {
-    if (letter !== "" && !correct && !almost) {
+    if (letter !== "" && !correctWord.includes(letter)) {      
       setDisabledLetters((prev) => [...prev, letter]);
     }
   }, [currAttempt.attempt]);

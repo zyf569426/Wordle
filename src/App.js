@@ -43,7 +43,7 @@ function App() {
     generateWordSet().then((words) => {                
         setWordLen(location.pathname === HARD_LEVEL_PATH ? HARD_WORD_LEN : MEDIUM_WORD_LEN);
         setWordSet(location.pathname == HARD_LEVEL_PATH ? words.wordSetHard : words.wordSetMedium );
-        setCorrectWord(location.pathname == HARD_LEVEL_PATH ? words.todaysWordHard : words.todaysWordMedium);                                  
+        setCorrectWord(location.pathname == HARD_LEVEL_PATH ? words.todaysWordHard : words.todaysWordMedium);                                                  
     });
   }, [wordLen, location.pathname]);
 
@@ -65,7 +65,7 @@ function App() {
   };
 
   const onEnter = () => {    
-    console.log("correct word: " + correctWord);     
+    console.log("correct word: " + correctWord);       
     let currWord = "";
     for (let i = 0; i < wordLen; i++) {
       currWord += board[currAttempt.attempt][i];
