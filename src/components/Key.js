@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AppContext } from "../App";
 
-function Key({ keyVal, bigKey, disabled }) {
+function Key( props ) {
   const {
     onSelectLetter,
     onDelete,
@@ -9,19 +9,43 @@ function Key({ keyVal, bigKey, disabled }) {
   } = useContext(AppContext);
 
   const selectLetter = () => {
-    if (keyVal === "ENTER") {
+    if (props.keyVal === "ENTER") {
       onEnter();
-    } else if (keyVal === "DELETE") {
+    } else if (props.keyVal === "DELETE") {
       onDelete();
     } else {
-      onSelectLetter(keyVal);
+      onSelectLetter(props.keyVal);
     }
   };
   return (
-    <div className="key" id={bigKey ? "big" : disabled && "disabled"} onClick={selectLetter}>
-      {keyVal}
+    <div className="key" id={props.bigKey ? "big" : props.disabled && "disabled"} onClick={selectLetter}>
+      {props.keyVal}
     </div>
   );
 }
+
+
+// function Key({ keyVal, bigKey, disabled }) {
+//   const {
+//     onSelectLetter,
+//     onDelete,
+//     onEnter,
+//   } = useContext(AppContext);
+
+//   const selectLetter = () => {
+//     if (keyVal === "ENTER") {
+//       onEnter();
+//     } else if (keyVal === "DELETE") {
+//       onDelete();
+//     } else {
+//       onSelectLetter(keyVal);
+//     }
+//   };
+//   return (
+//     <div className="key" id={bigKey ? "big" : disabled && "disabled"} onClick={selectLetter}>
+//       {keyVal}
+//     </div>
+//   );
+// }
 
 export default Key;
